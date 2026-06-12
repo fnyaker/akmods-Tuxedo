@@ -35,6 +35,10 @@ See `images.yaml` for which akmods packages are built for each Kernel
 The `common` images contain related kmod packages, plus:
 
 - `ublue-os-akmods-addons` - installs extra repos and our kmods signing key; install and import to allow SecureBoot systems to use these kmods
+
+The `tuxedo` images contain everything from `common` and `extra`, plus:
+
+- [tuxedo-drivers](https://gitlab.com/tuxedocomputers/development/packages/tuxedo-drivers) kmods, built from TUXEDO's upstream source
 - [tuxedo-control-center](https://github.com/tuxedocomputers/tuxedo-control-center) - cached from [TUXEDO's official repo](https://rpm.tuxedocomputers.com/fedora/); userspace companion for the `tuxedo-drivers` kmod (note: installs into `/opt`, which consuming atomic images must handle at build time)
 
 The `nvidia` and `nvidia-open` images contains
@@ -50,7 +54,7 @@ The `nvidia` and `nvidia-open` images contains
 |-------|---------|-------------|--------|
 | common | [framework-laptop](https://github.com/DHowett/framework-laptop-kmod) | A kernel module that exposes the Framework Laptop (13, 16)'s battery charge limit and LEDs to userspace | [![badge](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/framework-laptop-kmod/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/framework-laptop-kmod) |
 | common | [openrazer](https://openrazer.github.io/) | kernel module adding additional features to Razer hardware | [![badge](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/openrazer-kmod/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/openrazer-kmod) |
-| common | [tuxedo-drivers](https://gitlab.com/tuxedocomputers/development/packages/tuxedo-drivers) | platform drivers for TUXEDO notebooks (keyboard backlight, fan control, sensors, WMI/ACPI) | [TUXEDO GitLab](https://gitlab.com/tuxedocomputers/development/packages/tuxedo-drivers) (built from source) |
+| tuxedo | [tuxedo-drivers](https://gitlab.com/tuxedocomputers/development/packages/tuxedo-drivers) | platform drivers for TUXEDO notebooks (keyboard backlight, fan control, sensors, WMI/ACPI) | [TUXEDO GitLab](https://gitlab.com/tuxedocomputers/development/packages/tuxedo-drivers) (built from source) |
 | common | [v4l2loopback](https://github.com/umlaeute/v4l2loopback) | allows creating "virtual video devices" | [RPMFusion - free](https://rpmfusion.org/) |
 | common | [wl](https://github.com/rpmfusion/broadcom-wl/) | support for some legacy broadcom wifi devices | [RPMFusion - nonfree](https://rpmfusion.org/) |
 | common | [xone](https://github.com/dlundqvist/xone) | xbox one controller USB wired/RF driver modified to work along-side xpad (built from [xonedo](https://github.com/OpenGamingCollective/xonedo) fork) | [![badge](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/xone-kmod/status_image/last_build.png)](https://copr.fedorainfracloud.org/coprs/ublue-os/akmods/package/xone-kmod) |

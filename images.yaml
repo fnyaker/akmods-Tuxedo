@@ -39,6 +39,15 @@ akmods-extra: &akmods-extra
   name: akmods-extra
   description: "A caching layer for pre-built extra akmod RPMs"
 
+# org/repo override the akmods-base values: the tuxedo target lives on this
+# fork, not on ublue-os (its anchor must come FIRST in the merge list — with
+# the spec-compliant merge behavior used by the Justfile, earlier keys win)
+akmods-tuxedo: &akmods-tuxedo
+  name: akmods-tuxedo
+  org: fnyaker
+  repo: akmods-Tuxedo
+  description: "A caching layer for common+extra akmod RPMs plus TUXEDO drivers and Control Center"
+
 desktop-build-group-only-x86: &desktop-build-group-only-x86
   common:
     !!merge <<:
@@ -54,6 +63,11 @@ desktop-build-group-only-x86: &desktop-build-group-only-x86
     !!merge <<:
       - *akmods-base
       - *akmods-nvidia-open
+      - *arch-only-x86
+  tuxedo:
+    !!merge <<:
+      - *akmods-tuxedo
+      - *akmods-base
       - *arch-only-x86
 
 ogc-desktop-build-group-only-x86: &ogc-desktop-build-group-only-x86
