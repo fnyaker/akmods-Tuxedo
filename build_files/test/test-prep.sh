@@ -83,6 +83,14 @@ elif [[ -d /tmp/akmods-rpms/extra ]]; then
         /tmp/akmods-rpms/kmods/*.rpm
         /tmp/akmods-rpms/extra/*.rpm
     )
+    # the tuxedo target also ships common/ alongside extra/: install it like
+    # the common branch below does. Its tuxedo-drivers-kmod-common exists in
+    # no repo (built from source), so kmod-tuxedo-drivers can only resolve
+    # against the local file — same for broadcom-wl/v4l2loopback, since the
+    # test image has no rpmfusion repos.
+    if [[ -d /tmp/akmods-rpms/common ]]; then
+        KMODS_TO_INSTALL+=(/tmp/akmods-rpms/common/*.rpm)
+    fi
 else
     KMODS_TO_INSTALL+=(
         /tmp/akmods-rpms/kmods/*.rpm

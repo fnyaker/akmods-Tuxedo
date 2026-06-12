@@ -36,10 +36,13 @@ gpgkey=https://rpm.tuxedocomputers.com/fedora/${RELEASE}/0x54840598.pub.asc
 skip_if_unavailable=False
 EOF
 
-mkdir -p /var/cache/rpms/common
-dnf download --destdir /var/cache/rpms/common \
+# TCC gets its own cache dir (not common/): the test stage installs everything
+# from common/, and TCC would drag a full Electron app + GUI deps into the test
+# image. Consuming images pick it up from /rpms/tuxedo/ instead.
+mkdir -p /var/cache/rpms/tuxedo
+dnf download --destdir /var/cache/rpms/tuxedo \
     tuxedo-control-center
 
-rm -f /var/cache/rpms/common/*.src.rpm
+rm -f /var/cache/rpms/tuxedo/*.src.rpm
 
 rm -f /etc/yum.repos.d/tuxedo.repo
