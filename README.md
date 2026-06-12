@@ -35,6 +35,7 @@ See `images.yaml` for which akmods packages are built for each Kernel
 The `common` images contain related kmod packages, plus:
 
 - `ublue-os-akmods-addons` - installs extra repos and our kmods signing key; install and import to allow SecureBoot systems to use these kmods
+- [tuxedo-control-center](https://github.com/tuxedocomputers/tuxedo-control-center) - cached from [TUXEDO's official repo](https://rpm.tuxedocomputers.com/fedora/); userspace companion for the `tuxedo-drivers` kmod (note: installs into `/opt`, which consuming atomic images must handle at build time)
 
 The `nvidia` and `nvidia-open` images contains
 

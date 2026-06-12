@@ -64,8 +64,8 @@ BuildRequires:  gcc
 BuildRequires:  make
 BuildRequires:  kmodtool
 
-# kmodtool generates the akmod-/kmod- sub-packages and the %{?kernel_versions}
-# list / %{?akmod_install} macro used below.
+# kmodtool generates the akmod-/kmod- sub-packages and the kernel_versions
+# list / akmod_install macro used below.
 %{expand:%(kmodtool --target %{_target_cpu} --kmodname %{kmod_name} %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null)}
 
 %description
@@ -120,6 +120,12 @@ URL:            https://gitlab.com/tuxedocomputers/development/packages/tuxedo-d
 Source0:        tuxedo-drivers-v%{version}.tar.gz
 BuildArch:      noarch
 
+# Userspace consumers (e.g. tuxedo-control-center) require
+# "(tuxedo-drivers >= 4.0.0 or tuxedo-keyboard >= 3.1.2)". Provide the upstream
+# package name so they resolve against these kmod packages instead of pulling
+# TUXEDO's DKMS package.
+Provides:       tuxedo-drivers = %{version}-%{release}
+
 %description
 udev rules, hwdb entries and modprobe configuration shipped with the TUXEDO
 laptop kernel modules (%{kmod_name}-kmod).
@@ -156,8 +162,12 @@ rpmbuild -ba --define "_topdir ${TOPDIR}" "${TOPDIR}/SPECS/tuxedo-drivers-kmod-c
 rpmbuild -ba --define "_topdir ${TOPDIR}" "${TOPDIR}/SPECS/tuxedo-drivers-kmod.spec"
 
 ### BUILD tuxedo-drivers kmod (succeed or fail-fast with debug output)
-# Installing the akmod drops the source RPM where akmods can find it.
-dnf install -y "${TOPDIR}/RPMS/${ARCH}/akmod-${KMOD_NAME}-"*.rpm
+# Installing the akmod drops the source RPM where akmods can find it. kmodtool
+# makes akmod-tuxedo-drivers require tuxedo-drivers-kmod-common, and both are
+# local files (no repo), so they must go into the same dnf transaction.
+dnf install -y \
+    "${TOPDIR}/RPMS/noarch/${KMOD_NAME}-kmod-common-"*.rpm \
+    "${TOPDIR}/RPMS/${ARCH}/akmod-${KMOD_NAME}-"*.rpm
 akmods --force --kernels "${KERNEL}" --kmod "${KMOD_NAME}"
 modinfo /usr/lib/modules/"${KERNEL}"/extra/"${KMOD_NAME}"/tuxedo_keyboard.ko.xz > /dev/null \
 || (find /var/cache/akmods/"${KMOD_NAME}"/ -name \*.log -print -exec cat {} \; && exit 1)
